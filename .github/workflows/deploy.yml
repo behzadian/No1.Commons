@@ -70,7 +70,7 @@ jobs:
       continue-on-error: true
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v5.3
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '10.0.x'
 
