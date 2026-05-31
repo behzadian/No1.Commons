@@ -1,6 +1,6 @@
-﻿namespace No1.Commons.Utility;
+﻿namespace No1.Commons.Extensions;
 
-public static class TypeUtility
+public static class TypeExtensionMethods
 {
 	/// <summary>
 	/// Returns name of Type with valid tags for generic parameters
