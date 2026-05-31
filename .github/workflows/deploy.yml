@@ -20,7 +20,9 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         V=$(grep -oP '(?<=<Version>)[^<]+' lib/lib.csproj|head -1); O=${{ github.repository_owner }}; P=${{ github.event.repository.name }}
-        ID=$(gh api "/orgs/$O/packages/nuget/$P/versions" --paginate --jq ".[]|select(.name==\"$V\")|.id" 2>/dev/null|head -1); gh api -X DELETE "/orgs/$O/packages/nuget/$P/versions/$ID" 2>/dev/null || gh api -X DELETE "/users/$O/packages/nuget/$P/versions/$ID" 2>/dev/null || true
+        J=$(gh api "/users/$O/packages/nuget/$P/versions" --paginate 2>/dev/null || gh api "/orgs/$O/packages/nuget/$P/versions" --paginate 2>/dev/null || echo "[]")
+        ID=$(echo "$J"|jq -r --arg v "$V" --arg n "${V%.0}" '.[]|select(.name==$v or .name==$n)|.id'|head -1)
+        [ -n "$ID" ] && { gh api -X DELETE "/users/$O/packages/nuget/$P/versions/$ID" || gh api -X DELETE "/orgs/$O/packages/nuget/$P/versions/$ID"; } || true
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
