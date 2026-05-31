@@ -12,19 +12,65 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/delete-package-versions@v5
-      with:
-        package-name: '${{ github.event.repository.name }}'
-        package-type: 'nuget'
-        num-old-versions-to-delete: 100
-        ignore-versions: 'initial'
-        token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v5
 
+    - name: Read package metadata
+      id: pkg
+      run: |
+        echo "version=$(grep -oP '(?<=<Version>)[^<]+' lib/lib.csproj | head -1)" >> "$GITHUB_OUTPUT"
+
+    - name: Resolve published package version id
+      id: version-id
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        OWNER="${{ github.repository_owner }}"
+        PKG="${{ github.event.repository.name }}"
+        VERSION="${{ steps.pkg.outputs.version }}"
+
+        if VERSIONS_JSON=$(gh api --paginate "/orgs/${OWNER}/packages/nuget/${PKG}/versions" 2>/dev/null); then
+          :
+        elif VERSIONS_JSON=$(gh api --paginate "/users/${OWNER}/packages/nuget/${PKG}/versions" 2>/dev/null); then
+          :
+        else
+          echo "Package not found; nothing to delete."
+          echo "package-version-id=" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        find_id() {
+          echo "$VERSIONS_JSON" | jq -r --arg v "$1" '.[] | select(.name == $v) | .id' | head -n1
+        }
+
+        PACKAGE_VERSION_ID=$(find_id "$VERSION")
+        if [ -z "$PACKAGE_VERSION_ID" ] || [ "$PACKAGE_VERSION_ID" = "null" ]; then
+          ALT="${VERSION%.0}"
+          if [ "$ALT" != "$VERSION" ]; then
+            PACKAGE_VERSION_ID=$(find_id "$ALT")
+          fi
+        fi
+
+        if [ -z "$PACKAGE_VERSION_ID" ] || [ "$PACKAGE_VERSION_ID" = "null" ]; then
+          echo "Version ${VERSION} is not published yet; skipping delete."
+          echo "package-version-id=" >> "$GITHUB_OUTPUT"
+        else
+          echo "Found published version id: ${PACKAGE_VERSION_ID}"
+          echo "package-version-id=${PACKAGE_VERSION_ID}" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Delete existing package version
+      if: steps.version-id.outputs.package-version-id != ''
+      uses: actions/delete-package-versions@v5
+      with:
+        package-version-ids: ${{ steps.version-id.outputs.package-version-id }}
+        package-name: ${{ github.event.repository.name }}
+        package-type: nuget
+        owner: ${{ github.repository_owner }}
+        token: ${{ secrets.GITHUB_TOKEN }}
       continue-on-error: true
-    - uses: actions/checkout@v3
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v5.3
       with:
         dotnet-version: '10.0.x'
 
@@ -47,5 +93,4 @@ jobs:
       run: |
         dotnet nuget push ./artifacts/*.nupkg \
           --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-          --api-key ${{ secrets.GITHUB_TOKEN }} \
-  # --skip-duplicate
+          --api-key ${{ secrets.GITHUB_TOKEN }}
