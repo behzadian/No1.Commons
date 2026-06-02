@@ -9,6 +9,9 @@
 		<IsPackable>true</IsPackable>
 		<AssemblyName>No1.Commons</AssemblyName>
 		<RootNamespace>No1.Commons</RootNamespace>
+		<Title>No1.Commons</Title>
+		<Description>Contains general utility &amp; helper classes</Description>
+		<PackageProjectUrl>https://github.com/behzadian/No1.Commons</PackageProjectUrl>
 		<PackageId>No1.Commons</PackageId>
 		<Authors>Hank Benz</Authors>
 		<Company>No1</Company>
@@ -16,6 +19,8 @@
 		<Version>1.0.1.0</Version>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>git@github.com:behzadian/No1.Commons.git</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 	<PropertyGroup>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
