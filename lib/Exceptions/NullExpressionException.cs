@@ -7,7 +7,7 @@ namespace No1.Commons.Exceptions;
 public class NullExpressionException(string? message = null) : Exception(message)
 {
 	[return: NotNull]
-	public static T Get<T>(Func<T> func, [CallerArgumentExpression(nameof(func))] string expression = "") {
+	public static T Exec<T>(Func<T> func, [CallerArgumentExpression(nameof(func))] string expression = "") {
 		ArgumentNullException.ThrowIfNull(func);
 		return func() ?? throw new NullExpressionException($"`{expression}` returned NULL.");
 	}
