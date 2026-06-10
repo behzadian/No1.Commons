@@ -68,9 +68,9 @@ public static class EnvUtility
 		string joinedSearchedPaths = string.Join("\n", searchedPaths);
 		if (logger.HasValue()) {
 			LogTemplates.LogEnvFileNotFound(logger, joinedSearchedPaths);
+			return null;
 		} else {
 			throw new FileNotFoundException($"No .env file found in any of below paths:\n {joinedSearchedPaths}");
 		}
-		return null;
 	}
 }
