@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,14 +7,14 @@ namespace No1.Commons.Utility;
 
 public static class EnvUtility
 {
-	public static string GetEnvFileKey(string key) {
-		return GetEnvFileKeyValues()[key];
+	public static string? GetEnvFileKey(string key) {
+		return EnsureEnvFileKeyValues().TryGetValue(key, out string? value) ? value : null;
 	}
 
-	private static readonly Dictionary<string, string> envFileKeyValues = [];
+	internal static readonly ConcurrentDictionary<string, string> envFileKeyValues = [];
 
-	private static Dictionary<string, string> GetEnvFileKeyValues() {
-		if (envFileKeyValues.Count > 0) {
+	private static ConcurrentDictionary<string, string> EnsureEnvFileKeyValues() {
+		if (!envFileKeyValues.IsEmpty) {
 			return envFileKeyValues;
 		}
 
@@ -40,11 +41,15 @@ public static class EnvUtility
 
 	private static string FindFileUpwards(string startDir, string fileName) {
 		var dir = new DirectoryInfo(startDir);
+		var searchedPaths = new List<string>();
 		while (dir != null) {
 			var candidate = Path.Combine(dir.FullName, fileName);
-			if (File.Exists(candidate)) return candidate;
+			if (File.Exists(candidate)) {
+				return candidate;
+			}
+			searchedPaths.Add(dir.FullName);
 			dir = dir.Parent;
 		}
-		throw new FileNotFoundException("No .env file found");
+		throw new FileNotFoundException($"No .env file found in any of below paths:\n {string.Join("\n", searchedPaths)}");
 	}
 }
