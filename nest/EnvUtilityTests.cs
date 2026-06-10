@@ -1,4 +1,6 @@
-﻿using No1.Commons.Utility;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
+using No1.Commons.Utility;
 
 namespace nest;
 
@@ -24,7 +26,7 @@ public class EnvUtilityTests
 	}
 
 	[Test]
-	public void WhenTheEnvFileDoesNotExistThenThrowsException() {
+	public void WhenTheEnvFileDoesNotExistAndLoggerNotProvidedThenThrowsException() {
 		// Arrange
 
 		// Act
@@ -32,6 +34,25 @@ public class EnvUtilityTests
 
 		// Assert
 		Assert.That(exception.Message, Does.StartWith("No .env file found in any of below paths:"));
+	}
+
+	[Test]
+	public void WhenTheEnvFileDoesNotExistAndLoggerProvidedThenLogError() {
+		// Arrange
+		var loggerMock = new Mock<ILogger>();
+		loggerMock.Setup(x => x.IsEnabled(LogLevel.Warning)).Returns(true);
+
+		// Act
+		EnvUtility.GetEnvFileKey("key", loggerMock.Object);
+
+		// Assert
+		loggerMock.Verify(x => x.Log(
+			LogLevel.Warning,
+			It.IsAny<EventId>(),
+			It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("env file") || v.ToString()!.Contains("not found")),
+			It.IsAny<Exception>(),
+			It.IsAny<Func<It.IsAnyType, Exception?, string>>()
+		), Times.Once);
 	}
 
 	[Test]
