@@ -21,6 +21,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>git@github.com:behzadian/No1.Commons.git</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 	<PropertyGroup>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -31,10 +32,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2">
-			<TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
-		<PackageReference Include="System.CodeDom" Version="10.0.8" />
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="nest" />
