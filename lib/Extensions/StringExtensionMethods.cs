@@ -16,4 +16,8 @@ public static class StringExtensionMethods
 	public static bool IsUsable([NotNullWhen(true)] this string? value) {
 		return !string.IsNullOrWhiteSpace(value);
 	}
+
+	public static bool IsNothing([MaybeNullWhen(true)] this string? value) {
+		return string.IsNullOrWhiteSpace(value);
+	}
 }
