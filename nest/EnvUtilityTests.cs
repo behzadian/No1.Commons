@@ -81,4 +81,16 @@ public class EnvUtilityTests
 		// Assert
 		Assert.That(value, Is.EqualTo("value"));
 	}
+
+	[Test]
+	public void WhenEnvFileExistsButTheKeyCommentedThenBehaveLikeKeyDoesNotExistAndReturnNull() {
+		// Arrange
+		File.AppendAllLines(DOTENV_FILE_PATH, ["#key=\"value\""]);
+
+		// Act
+		var value = EnvUtility.GetEnvFileKey("key");
+
+		// Assert
+		Assert.That(value, Is.Null);
+	}
 }
