@@ -23,8 +23,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<NoWarn>CS1591,SA1600,SA1200,SA1601,SA1633,SA1500,RCS1194,NU1507,SA1300</NoWarn>
-		<WarningsNotAsErrors>NU1507</WarningsNotAsErrors>
+		<NoWarn>CS1591,SA1600,SA1200,SA1601,SA1633,SA1500,RCS1194,SA1300</NoWarn>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 	<PropertyGroup>
