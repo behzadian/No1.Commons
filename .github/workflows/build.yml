@@ -10,6 +10,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
+      with:
+        autocrlf: false
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
