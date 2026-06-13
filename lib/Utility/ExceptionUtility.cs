@@ -6,10 +6,13 @@ public static class ExceptionUtility
 	public static T ExecExceptionless<T>(this Func<T> func, T defaultValue)
 		where T : notnull
 	{
-		try {
+		try
+		{
 			ArgumentNullException.ThrowIfNull(func);
 			return func();
-		} catch (Exception) {
+		}
+		catch (Exception)
+		{
 			return defaultValue;
 		}
 	}
