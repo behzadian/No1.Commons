@@ -17,7 +17,7 @@ jobs:
         global-json-file: global.json
 
     - name: .NET Information
-      run: dotnet --info
+      run: dotnet --version
 
     - name: Restore dependencies
       run: dotnet restore
@@ -41,15 +41,16 @@ jobs:
 
     - name: Check if version already published
       run: |
-        # Extract version from package
-        PKG_VERSION=$(ls ./artifacts/*.nupkg | sed -E 's/.*\.([0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?)\.nupkg/\1/' | head -1)
-        PKG_NAME="No1.Commons"
+        # Extract version and package name from artifact
+        ARTIFACT=$(ls ./artifacts/*.nupkg | head -1)
+        PKG_VERSION=$(echo "$ARTIFACT" | sed -E 's/.*\.([0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?)\.nupkg/\1/')
+        PKG_NAME=$(echo "$ARTIFACT" | sed -E 's/.*\/([^\/]+)\.[0-9]+\.[0-9]+\.[0-9]+.*\.nupkg/\1/' | tr '[:upper:]' '[:lower:]')
         
         echo "Checking version: $PKG_VERSION for package: $PKG_NAME"
         
         # Check nuget.org
         NUGET_RESPONSE=$(curl -s "https://api.nuget.org/v3-flatcontainer/$PKG_NAME/index.json")
-        if echo "$NUGET_RESPONSE" | jq -e ".versions[] | select(. == \"$PKG_VERSION\")" > /dev/null 2>&1; then
+        if echo "$NUGET_RESPONSE" | jq -e ".versions | map(select(. == \"$PKG_VERSION\")) | length > 0" > /dev/null 2>&1; then
           echo "ERROR: Version $PKG_VERSION already exists on nuget.org"
           exit 1
         fi
