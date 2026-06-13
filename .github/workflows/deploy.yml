@@ -11,6 +11,12 @@ jobs:
       packages: write
       contents: read
       id-token: write
+    
+    - name: NuGet login (OIDC → temp API key)
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: Farayan
 
     steps:
     - uses: actions/checkout@v5
@@ -40,12 +46,6 @@ jobs:
     #     dotnet nuget push ./artifacts/*.nupkg \
     #       --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
     #       --api-key ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: NuGet login (OIDC → temp API key)
-      uses: NuGet/login@v1
-      id: login
-      with:
-        user: nuget@no1.ir
     
     - name: Deploy to NuGet.org
       run: ls ./artifacts && dotnet nuget push ./artifacts/*.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
