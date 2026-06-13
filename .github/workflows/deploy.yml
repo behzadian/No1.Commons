@@ -34,11 +34,12 @@ jobs:
     - name: Pack
       run: dotnet pack -c Release --no-build --output ./artifacts
 
-    # - name: Publish to GitHub Packages
+    # - name: Deploy to GitHub
     #   run: |
     #     dotnet nuget push ./artifacts/*.nupkg \
     #       --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
     #       --api-key ${{ secrets.GITHUB_TOKEN }}
     
-    - name: NuGet push
+    - name: Deploy to NuGet.org
+      run: ls ./artifacts
       run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
