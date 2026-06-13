@@ -19,7 +19,7 @@ public class EnvUtilityTests
 	}
 
 	private static void Clean() {
-		EnvUtility.envFileKeyValues.Clear();
+		EnvUtility.EnvFileKeyValues.Clear();
 		if (File.Exists(DOTENV_FILE_PATH)) {
 			File.Delete(DOTENV_FILE_PATH);
 		}

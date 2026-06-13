@@ -3,10 +3,10 @@
 public static class TypeExtensionMethods
 {
 	/// <summary>
-	/// Returns name of Type with valid tags for generic parameters
+	/// Returns name of Type with valid tags for generic parameters.
 	/// </summary>
-	/// <param name="type"></param>
-	/// <returns></returns>
+	/// <param name="type">input.</param>
+	/// <returns>Friendly name of input type.</returns>
 	public static string FriendlyName(this Type type) {
 		ArgumentNullException.ThrowIfNull(type);
 		return Format(type);
@@ -44,5 +44,4 @@ public static class TypeExtensionMethods
 			return t.Name;
 		}
 	}
-
 }
