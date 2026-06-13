@@ -2,7 +2,7 @@ name: Deploy NuGet Package
 
 on:
   push:
-    branches: [ main,"v1.1.00" ]
+    branches: [ main,"v1.1.0" ]
 
 jobs:
   deploy:
@@ -14,20 +14,10 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
-    - name: Delete published version (if any)
-      continue-on-error: true
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        V=$(grep -oP '(?<=<Version>)[^<]+' lib/lib.csproj|head -1); O=${{ github.repository_owner }}; P=${{ github.event.repository.name }}
-        J=$(gh api "/users/$O/packages/nuget/$P/versions" --paginate 2>/dev/null || gh api "/orgs/$O/packages/nuget/$P/versions" --paginate 2>/dev/null || echo "[]")
-        ID=$(echo "$J"|jq -r --arg v "$V" --arg n "${V%.0}" '.[]|select(.name==$v or .name==$n)|.id'|head -1)
-        [ -n "$ID" ] && { gh api -X DELETE "/users/$O/packages/nuget/$P/versions/$ID" || gh api -X DELETE "/orgs/$O/packages/nuget/$P/versions/$ID"; } || true
-
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: '10.0.x'
+        global-json-file: global.json
 
     - name: Restore dependencies
       run: dotnet restore
@@ -44,11 +34,11 @@ jobs:
     - name: Pack
       run: dotnet pack -c Release --no-build --output ./artifacts
 
-    - name: Publish to GitHub Packages
-      run: |
-        dotnet nuget push ./artifacts/*.nupkg \
-          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-          --api-key ${{ secrets.GITHUB_TOKEN }}
+    # - name: Publish to GitHub Packages
+    #   run: |
+    #     dotnet nuget push ./artifacts/*.nupkg \
+    #       --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+    #       --api-key ${{ secrets.GITHUB_TOKEN }}
     
     - name: NuGet push
       run: dotnet nuget push artifacts/No1.Commons.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
