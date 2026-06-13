@@ -39,7 +39,7 @@ jobs:
     - name: Pack
       run: dotnet pack -c Release --no-build --output ./artifacts
 
-    - name: Check if version already published
+    - name: Check duplicate version
       run: |
         # Extract version and package name from artifact
         ARTIFACT=$(ls ./artifacts/*.nupkg | head -1)
