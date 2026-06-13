@@ -22,7 +22,8 @@ jobs:
       run: |
         dotnet --version
         dotnet format --version
-        cat -A lib/Utility/ExceptionUtility.cs
+        sha256sum lib/Utility/ExceptionUtility.cs
+        stat -c%s lib/Utility/ExceptionUtility.cs
 
     - name: Restore dependencies
       run: dotnet restore
