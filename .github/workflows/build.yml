@@ -17,7 +17,9 @@ jobs:
         global-json-file: global.json
 
     - name: .NET Information
-      run: dotnet --version
+      run: |
+        - dotnet --version
+        - dotnet format --version
 
     - name: Restore dependencies
       run: dotnet restore
