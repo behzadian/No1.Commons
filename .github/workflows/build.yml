@@ -24,7 +24,7 @@ jobs:
         dotnet format --version
         sha256sum lib/Utility/ExceptionUtility.cs
         stat -c%s lib/Utility/ExceptionUtility.cs
-        od -An -t u1 lib/Utility/ExceptionUtility.cs | tr -s ' ' '\n' | grep -v '^$' | paste -sd,
+        od -An -v -t u1 lib/Utility/ExceptionUtility.cs | tr -s ' ' '\n' | grep . | while read n; do printf '%s\t%s\n' "$n" "$(printf "\\$(printf '%03o' "$n")")"; done
 
     - name: Restore dependencies
       run: dotnet restore
