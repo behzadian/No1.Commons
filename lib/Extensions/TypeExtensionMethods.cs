@@ -1,4 +1,4 @@
-﻿namespace No1.Commons.Extensions;
+namespace No1.Commons.Extensions;
 
 public static class TypeExtensionMethods
 {

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using No1.Commons.Extensions;
 using No1.Commons.Logs;
 using System.Collections.Concurrent;
