@@ -24,6 +24,7 @@ jobs:
         dotnet format --version
         sha256sum lib/Utility/ExceptionUtility.cs
         stat -c%s lib/Utility/ExceptionUtility.cs
+        od -An -t u1 lib/Utility/ExceptionUtility.cs | tr -s ' ' '\n' | grep -v '^$' | paste -sd,
 
     - name: Restore dependencies
       run: dotnet restore
