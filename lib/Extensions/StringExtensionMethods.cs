@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace No1.Commons.Extensions;
 
@@ -17,7 +14,11 @@ public static class StringExtensionMethods
 		return !string.IsNullOrWhiteSpace(value);
 	}
 
-	public static bool IsNothing([MaybeNullWhen(true)] this string? value) {
+	public static bool IsUseful([MaybeNullWhen(true)] this string? value) {
+		return !string.IsNullOrWhiteSpace(value);
+	}
+
+	public static bool IsUseless([MaybeNullWhen(true)] this string? value) {
 		return string.IsNullOrWhiteSpace(value);
 	}
 }

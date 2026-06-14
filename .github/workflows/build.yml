@@ -16,8 +16,10 @@ jobs:
       with:
         global-json-file: global.json
 
-    - name: .NET Information
-      run: dotnet --version
+    - name: .NET Version
+      run: |
+        dotnet --version
+        dotnet format --version
 
     - name: Restore dependencies
       run: dotnet restore
@@ -39,7 +41,7 @@ jobs:
     - name: Pack
       run: dotnet pack -c Release --no-build --output ./artifacts
 
-    - name: Check if version already published
+    - name: Check duplicate version
       run: |
         # Extract version and package name from artifact
         ARTIFACT=$(ls ./artifacts/*.nupkg | head -1)
