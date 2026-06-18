@@ -12,14 +12,14 @@ public static class GeneralExtensionMethods
 	/// <summary>
 	/// Returns true if object that is being called on, is not null.
 	/// </summary>
-	/// <param name="obj">object that is being base of call. For example <code>obj.HasValue();</code></param>
+	/// <param name="obj">object that is being base of call. For example. <code>obj.HasValue();</code></param>
 	/// <returns>True if object was not null.</returns>
 	public static bool HasValue([NotNullWhen(true)] this object? obj) => obj != null;
 
 	/// <summary>
 	/// Returns true if object that is being called on, is not null.
 	/// </summary>
-	/// <param name="obj">object that is being base of call. For example <code>obj.HasValue();</code></param>
+	/// <param name="obj">object that is being base of call. For example. <code>obj.HasValue();</code></param>
 	/// <returns>True if object was not null.</returns>
 	public static bool IsUsable([NotNullWhen(true)] this object? obj) => obj != null;
 
