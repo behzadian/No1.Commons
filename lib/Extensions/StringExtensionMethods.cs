@@ -28,4 +28,16 @@ public static class StringExtensionMethods
 	public static bool IsUseless([MaybeNullWhen(true)] this string? value) {
 		return string.IsNullOrWhiteSpace(value);
 	}
+
+	[return: NotNull]
+	public static string StripEnd(this string value, string removing, StringComparison comparison = StringComparison.InvariantCulture) {
+		ArgumentException.ThrowIfNullOrWhiteSpace(value);
+		ArgumentException.ThrowIfNullOrWhiteSpace(removing);
+
+		if (!value.EndsWith(removing, comparison)) {
+			return value;
+		}
+
+		return value[0..^removing.Length];
+	}
 }
