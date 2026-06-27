@@ -4,22 +4,19 @@ namespace No1.Commons.Utility;
 
 public static class TypeUtility
 {
-	public static Type? ResolveType(string name)
-	{
+	public static Type? ResolveType(string name) {
 		if (string.IsNullOrWhiteSpace(name)) {
 			return null;
 		}
 
 		// 1. Fully qualified (contains assembly info)
 		// Example: "MyApp.Models.User, MyApp"
-		if (name.Contains(',', StringComparison.InvariantCultureIgnoreCase))
-		{
+		if (name.Contains(',', StringComparison.InvariantCultureIgnoreCase)) {
 			return Type.GetType(name);
 		}
 
 		// 2. Has namespace (e.g. "MyApp.Models.User")
-		if (name.Contains('.', StringComparison.InvariantCultureIgnoreCase))
-		{
+		if (name.Contains('.', StringComparison.InvariantCultureIgnoreCase)) {
 			var type = Type.GetType(name);
 
 			if (type != null) {
