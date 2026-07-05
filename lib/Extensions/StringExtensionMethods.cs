@@ -1,3 +1,4 @@
+using No1.Commons.Exceptions;
 using System.Diagnostics.CodeAnalysis;
 
 namespace No1.Commons.Extensions;
@@ -8,6 +9,12 @@ public static class StringExtensionMethods
 	public static string Otherwise(this string? value, string replacement) {
 		ArgumentException.ThrowIfNullOrWhiteSpace(replacement);
 		return value.IsUsable() ? value : replacement;
+	}
+
+	[return: NotNull]
+	public static string Otherwise(this string? value, Func<string> replacementProvider) {
+		ArgumentNullException.ThrowIfNull(replacementProvider);
+		return value.IsUsable() ? value : NullExpressionException.Exec(() => replacementProvider());
 	}
 
 	public static bool IsUsable([NotNullWhen(true)] this string? value) {
