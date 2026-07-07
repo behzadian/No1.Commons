@@ -8,4 +8,18 @@ public static class KotlinExtensions
 		ArgumentNullException.ThrowIfNull(func);
 		return value.IsUsable() ? func(value) : default;
 	}
+
+	public static T Init<T>(this T value, Action<T> action)
+	where T : notnull {
+		ArgumentNullException.ThrowIfNull(action);
+		action(value);
+		return value;
+	}
+
+	public static Task<T> InitAsync<T>(this T value, Action<T> action)
+	where T : notnull {
+		ArgumentNullException.ThrowIfNull(action);
+		action(value);
+		return Task.FromResult(value);
+	}
 }
