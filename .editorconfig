@@ -24,6 +24,7 @@ dotnet_diagnostic.SA1009.severity = none
 dotnet_diagnostic.SA1111.severity = none
 dotnet_diagnostic.S6964.severity = none
 dotnet_diagnostic.SA1128.severity = none
+dotnet_diagnostic.SA1127.severity = none
 dotnet_diagnostic.IDE0005.severity = error
 dotnet_diagnostic.IDE0130.severity = error
 
