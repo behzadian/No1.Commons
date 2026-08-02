@@ -6,9 +6,9 @@ public static class GeneralExtensionMethods
 {
 	public static bool HasValue<T>([NotNullWhen(true)] this T? obj) where T : notnull => obj is not null && !EqualityComparer<T>.Default.Equals(obj, default!);
 
-	public static bool IsUsable([NotNullWhen(true)] this object? obj) => obj != null;
+	public static bool IsUsable<T>([NotNullWhen(true)] this T? obj) where T : notnull => obj.HasValue();
 
-	public static bool IsUseless([NotNullWhen(false)] this object? obj) => obj == null;
+	public static bool IsUseless<T>([NotNullWhen(false)] this T? obj) where T : notnull => !obj.HasValue();
 
 	[return: NotNull]
 	public static T Otherwise<T>(this T? value, T replacement)
