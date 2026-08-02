@@ -1,4 +1,5 @@
 # Global EditorStyle file
+# Version 260802.1847
 # Version 260709.1344
 # Version 260702.0042
 # Version 260701.2152
@@ -23,6 +24,7 @@ dotnet_diagnostic.SA1101.severity = none
 dotnet_diagnostic.SA1009.severity = none
 dotnet_diagnostic.SA1111.severity = none
 dotnet_diagnostic.S6964.severity = none
+dotnet_diagnostic.SA1127.severity = none
 dotnet_diagnostic.SA1128.severity = none
 dotnet_diagnostic.IDE0005.severity = error
 dotnet_diagnostic.IDE0130.severity = error

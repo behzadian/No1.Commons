@@ -11,4 +11,9 @@ public class NullExpressionException(string? message = null) : Exception(message
 		ArgumentNullException.ThrowIfNull(func);
 		return func() ?? throw new NullExpressionException($"`{expression}` returned NULL.");
 	}
+
+	[return: NotNull]
+	public static T Valuable<T>(T? value, [CallerArgumentExpression(nameof(value))] string expression = "") {
+		return value ?? throw new NullExpressionException($"`{expression}` is NULL.");
+	}
 }
