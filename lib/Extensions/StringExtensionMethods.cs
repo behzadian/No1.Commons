@@ -8,25 +8,25 @@ public static class StringExtensionMethods
 	[return: NotNull]
 	public static string Otherwise(this string? value, string replacement) {
 		ArgumentException.ThrowIfNullOrWhiteSpace(replacement);
-		return value.IsUsable() ? value : replacement;
+		return value.HasValue() ? value : replacement;
 	}
 
 	[return: NotNull]
 	public static string Otherwise(this string? value, Func<string> replacementProvider) {
 		ArgumentNullException.ThrowIfNull(replacementProvider);
-		return value.IsUsable() ? value : NullExpressionException.Exec(() => replacementProvider());
+		return value.HasValue() ? value : NullExpressionException.Exec(() => replacementProvider());
 	}
 
 	public static bool IsUsable([NotNullWhen(true)] this string? value) {
-		return !string.IsNullOrWhiteSpace(value);
+		return value.HasValue();
 	}
 
 	public static bool IsUseful([NotNullWhen(true)] this string? value) {
-		return !string.IsNullOrWhiteSpace(value);
+		return value.HasValue();
 	}
 
 	public static bool IsUseless([NotNullWhen(false)] this string? value) {
-		return string.IsNullOrWhiteSpace(value);
+		return !value.HasValue();
 	}
 
 	[return: NotNull]

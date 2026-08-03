@@ -1,10 +1,11 @@
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
 namespace No1.Commons.Extensions;
 
 public static class GeneralExtensionMethods
 {
-	public static bool HasValue<T>([NotNullWhen(true)] this T? obj) where T : notnull => obj is not null && !EqualityComparer<T>.Default.Equals(obj, default!);
+	public static bool HasValue<T>([NotNullWhen(true)] this T? obj) where T : notnull => obj is not null && !EqualityComparer<T>.Default.Equals(obj, default!) && (obj is not IEnumerable e || e.GetEnumerator().MoveNext());
 
 	public static bool IsUsable<T>([NotNullWhen(true)] this T? obj) where T : notnull => obj.HasValue();
 
